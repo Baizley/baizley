@@ -1,0 +1,36 @@
+version: '3.0'
+
+services:
+
+  letsencrypt:
+    image: barafu/ingress:latest
+    container_name: ingress
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - URL=baizley.com
+      - SUBDOMAINS=www,moviequiz
+      - VALIDATION=http
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+
+  ifyoulike:
+    container_name: ifyoulike
+    image: barafu/ifyoulike:1.0.0
+    env_file:
+      - ~/Programming/ifyoulike/environment.env
+    ports:
+      - '8080:8080'
+    restart: unless-stopped
+
+  movie-quiz:
+    container_name: movie-quiz
+    image: barafu/movie-quiz:latest
+    ports:
+      - '8090:8080'
+    restart: unless-stopped
