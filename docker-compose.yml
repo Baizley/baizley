@@ -2,18 +2,17 @@ version: '3.0'
 
 services:
 
-  letsencrypt:
-    image: barafu/ingress:latest
+  ingress:
+    image: barafu/ingress:1.0.0
     container_name: ingress
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
+      - TZ=Europe/Copenhagen
       - URL=baizley.com
-      - SUBDOMAINS=www,moviequiz
+      - SUBDOMAINS=www,moviequiz,companyhierarchy
       - VALIDATION=http
+      - STAGING=true
     ports:
       - 443:443
       - 80:80
@@ -24,13 +23,28 @@ services:
     image: barafu/ifyoulike:1.0.0
     env_file:
       - ~/Programming/ifyoulike/environment.env
-    ports:
-      - '8080:8080'
     restart: unless-stopped
 
   movie-quiz:
     container_name: movie-quiz
-    image: barafu/movie-quiz:latest
-    ports:
-      - '8090:8080'
+    image: barafu/movie-quiz:0.0.1
     restart: unless-stopped
+
+  company-hierarchy:
+    container_name: company-hierarchy
+    image: barafu/company-hierarchy:1.0.0
+    restart: unless-stopped
+
+  postgres:
+    container_name: postgres
+    image: barafu/postgres:1.0.0
+    volumes:
+      - db-data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=hierarchical company
+      - POSTGRES_DB=company
+    ports:
+      - "5432:5432"
+
+volumes:
+  db-data:
