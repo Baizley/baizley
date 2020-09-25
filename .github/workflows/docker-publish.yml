@@ -65,7 +65,7 @@ jobs:
           DATA_SHIPPER_IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/data-shipper
 
           # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $DATA_SHIPPER_IMAGE_ID | tr '[A-Z]' '[a-z]')
+          DATA_SHIPPER_IMAGE_ID=$(echo $DATA_SHIPPER_IMAGE_ID | tr '[A-Z]' '[a-z]')
 
           # Strip git ref prefix from version
           # VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
