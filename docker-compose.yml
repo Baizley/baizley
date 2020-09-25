@@ -46,7 +46,7 @@ services:
 
   company-hierarchy:
     container_name: company-hierarchy
-    image: barafu/company-hierarchy:1.0.0
+    image: docker.pkg.github.com/baizley/company-hierarchy/company-hierarchy:1.0.0
     restart: unless-stopped
 
   postgres:
