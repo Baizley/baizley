@@ -41,10 +41,10 @@ jobs:
 
       - name: Push image to GitHub Container Registry
         run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository_owner }}/$IMAGE_NAME
+          INGRESS_IMAGE_ID=docker.pkg.github.com/${{ github.repository_owner }}/ingress
 
           # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          INGRESS_IMAGE_ID=$(echo INGRESS_IMAGE_ID | tr '[A-Z]' '[a-z]')
 
           # Strip git ref prefix from version
           # VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
@@ -56,11 +56,29 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
 
-          echo IMAGE_ID=$IMAGE_ID
+          echo IMAGE_ID=$INGRESS_IMAGE_ID
           echo VERSION=$VERSION
 
-          docker tag ingress ingress:1.0.0
-          docker push ingress:1.0.0
+          docker tag ingress $INGRESS_IMAGE_ID:$VERSION
+          docker push $INGRESS_IMAGE_ID:$VERSION
 
-          docker tag data-shipper data-shipper:1.0.0
-          docker push data-shipper:1.0.0
+          DATA_SHIPPER_IMAGE_ID=docker.pkg.github.com/${{ github.repository_owner }}/data-shipper
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $DATA_SHIPPER_IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # Strip git ref prefix from version
+          # VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          VERSION=1.0.0
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+          echo IMAGE_ID=$DATA_SHIPPER_IMAGE_ID
+          echo VERSION=$VERSION
+
+          docker tag data-shipper $DATA_SHIPPER_IMAGE_ID
+          docker push $DATA_SHIPPER_IMAGE_ID
