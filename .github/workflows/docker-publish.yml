@@ -44,7 +44,7 @@ jobs:
           INGRESS_IMAGE_ID=docker.pkg.github.com/${{ github.repository_owner }}/ingress
 
           # Change all uppercase to lowercase
-          INGRESS_IMAGE_ID=$(echo INGRESS_IMAGE_ID | tr '[A-Z]' '[a-z]')
+          INGRESS_IMAGE_ID=$(echo $INGRESS_IMAGE_ID | tr '[A-Z]' '[a-z]')
 
           # Strip git ref prefix from version
           # VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
