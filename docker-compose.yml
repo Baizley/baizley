@@ -4,7 +4,7 @@ services:
 
   ingress:
     build: nginx/
-    image: barafu/ingress:1.0.0
+    image: docker.pkg.github.com/baizley/baizley/ingress:1.0.0
     container_name: ingress
     cap_add:
       - NET_ADMIN
@@ -21,7 +21,7 @@ services:
 
   data-shipper:
      build: fluentd/
-     image: barafu/data-shipper:1.0.0
+     image: docker.pkg.github.com/baizley/baizley/data-shipper:1.0.0
      container_name: data-shipper
      environment:
        - FLUENTD_CONF=baizley.conf
