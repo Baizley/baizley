@@ -41,7 +41,7 @@ jobs:
 
       - name: Push image to GitHub Container Registry
         run: |
-          INGRESS_IMAGE_ID=docker.pkg.github.com/${{ github.repository_owner }}/ingress
+          INGRESS_IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/ingress
 
           # Change all uppercase to lowercase
           INGRESS_IMAGE_ID=$(echo $INGRESS_IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -62,7 +62,7 @@ jobs:
           docker tag ingress $INGRESS_IMAGE_ID:$VERSION
           docker push $INGRESS_IMAGE_ID:$VERSION
 
-          DATA_SHIPPER_IMAGE_ID=docker.pkg.github.com/${{ github.repository_owner }}/data-shipper
+          DATA_SHIPPER_IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/data-shipper
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $DATA_SHIPPER_IMAGE_ID | tr '[A-Z]' '[a-z]')
